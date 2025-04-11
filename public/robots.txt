@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://misiknote.com
+
+# Sitemaps
+Sitemap: https://misiknote.com/sitemap.xml
