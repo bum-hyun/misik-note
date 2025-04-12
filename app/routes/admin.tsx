@@ -1,10 +1,10 @@
-import { Link } from '@remix-run/react';
+import { Link, Outlet } from '@remix-run/react';
 import React from 'react';
 import { css } from 'styled-system/css';
 
 import { ROUTE_PATHS } from '~/constants/pathname';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout() {
   return (
     <main className={dashboardContainerStyle}>
       <nav className={navContainerStyle}>
@@ -24,7 +24,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </Link>
         </div>
       </nav>
-      <div className={contentsContainerStyle}>{children}</div>
+
+      <div className={contentsContainerStyle}>
+        <Outlet />
+      </div>
     </main>
   );
 }

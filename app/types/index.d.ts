@@ -43,7 +43,7 @@ interface IPostRestaurant {
 }
 
 interface IPutRestaurant extends IPostRestaurant {
-  id: number;
+  id: string | number;
 }
 
 interface IModalProps {

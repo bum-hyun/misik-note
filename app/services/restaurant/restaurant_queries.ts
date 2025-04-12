@@ -13,7 +13,7 @@ export const useGetRestaurants = (params: IGetRestaurantsParams) =>
     initialPageParam: 0,
   });
 
-export const useGetRestaurant = (id: number) =>
+export const useGetRestaurant = (id: string | number) =>
   useQuery<IRestaurant>({
     queryKey: [SERVICE_KEY.RESTAURANT.GET_RESTAURANT, id],
     queryFn: () => getRestaurant(id),

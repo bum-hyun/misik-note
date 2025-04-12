@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from '@remix-run/react';
-import { lazy, startTransition, Suspense, useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 import { css } from 'styled-system/css';
 
 import Logo from '~/assets/logo.png';
@@ -10,9 +10,8 @@ import { useUserStore } from '~/stores/userStore';
 import { getSupabaseBrowserClient } from '~/utils/supabase/client';
 import { isEmpty } from '~/utils/common';
 import type { loader as rootLoader } from '~/root';
-
-const LoginModal = lazy(() => import('~/components/home/LoginModal'));
-const ReportModal = lazy(() => import('~/components/home/ReportModal'));
+import LoginModal from '~/components/home/LoginModal';
+import ReportModal from '~/components/home/ReportModal';
 
 const Header = () => {
   const { user, isLoggedIn } = useLoaderData<typeof rootLoader>();
@@ -72,12 +71,8 @@ const Header = () => {
         </div>
       </nav>
       <div className={emptyHeightStyle} />
-      <Suspense fallback={null}>
-        <LoginModal visible={visible} handleCloseModal={() => setVisible(false)} />
-      </Suspense>
-      <Suspense fallback={null}>
-        <ReportModal visible={visibleReportModal} handleCloseModal={() => setVisibleReportModal(false)} />
-      </Suspense>
+      <LoginModal visible={visible} handleCloseModal={() => setVisible(false)} />
+      <ReportModal visible={visibleReportModal} handleCloseModal={() => setVisibleReportModal(false)} />
     </>
   );
 };

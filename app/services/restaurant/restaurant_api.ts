@@ -23,7 +23,7 @@ export const getRestaurants = async (params: IGetRestaurantsParams): Promise<IRe
   return data;
 };
 
-export const getRestaurant = async (id: number): Promise<IRestaurant> => {
+export const getRestaurant = async (id: string | number): Promise<IRestaurant> => {
   const supabase = getSupabaseBrowserClient();
 
   const { data, error } = await supabase.from(DATABASE_NAMES.RESTAURANTS).select('*').eq('id', id).single();

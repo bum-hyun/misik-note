@@ -1,5 +1,4 @@
 import EditorJS from '@editorjs/editorjs';
-import Undo from 'editorjs-undo';
 import { useEffect, useRef } from 'react';
 
 import { useEditorStore } from '~/stores/editorStore';
@@ -11,21 +10,22 @@ const Editor = () => {
   const editorCore = useRef<EditorJS | null>(null);
 
   useEffect(() => {
-    const editor = new EditorJS({
-      holder: 'editorjs',
-      tools: EditorTools,
-      onReady: () => {
-        const editor = editorCore.current;
-        new Undo({ editor });
-        setEditor(editor);
-      },
-    });
+    const load = async () => {
+      const { default: EditorJS } = await import('@editorjs/editorjs');
+      editorCore.current = new EditorJS({
+        holder: 'editorjs',
+        tools: EditorTools,
+        onReady: () => {
+          const editor = editorCore.current;
+          setEditor(editor);
+        },
+      });
+    };
 
-    editorCore.current = editor;
+    load();
 
     return () => {
-      editor.clear();
-      editor.isReady.then(() => editor.destroy()).catch((err) => console.error('Editor.js cleanup failed:', err));
+      editorCore.current?.isReady.then(() => editorCore.current?.destroy()).catch((err) => console.error('Editor.js cleanup failed:', err));
     };
   }, []);
 

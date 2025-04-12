@@ -48,7 +48,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ user, isLoggedIn: !!user }, { headers: response.headers });
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout() {
   return (
     <html lang="ko">
       <head>
@@ -61,7 +61,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <ReactQueryProvider>
         <body className={css({ display: 'flex', flexDirection: 'column', height: '100vh' })}>
           <Header />
-          {children}
+          <Outlet />
           <ScrollRestoration />
           <Scripts />
           <Analytics />

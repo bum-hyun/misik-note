@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react';
 import { css } from 'styled-system/css';
 import { flex } from 'styled-system/patterns';
-
-import supabase from '~/utils/supabase/client';
+import { getSupabaseBrowserClient } from '~/utils/supabase/client';
 
 interface IEditRestaurantFormProps {
   payload: IPostRestaurant | IPutRestaurant;
@@ -44,6 +43,7 @@ const EditRestaurantForm = ({ payload, setPayload, editRestaurant }: IEditRestau
   }, []);
 
   const handleUploadThumbnail = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const supabase = getSupabaseBrowserClient();
     const file = event.target.files?.[0];
     if (!file) return;
 

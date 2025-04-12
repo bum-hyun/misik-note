@@ -5,6 +5,7 @@ import EditRestaurantForm from '~/components/admin/edit/EditRestaurantForm';
 import { ROUTE_PATHS } from '~/constants/pathname';
 import { usePostRestaurant } from '~/services/restaurant/restaurant_queries';
 import { useNavigate } from '@remix-run/react';
+import { SERVICE_KEY } from '~/constants/service';
 
 const Page = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Page = () => {
   const editRestaurant = useCallback(async () => {
     try {
       await postRestaurant(payload);
-      await queryClient.invalidateQueries({ queryKey: ['restaurants'] });
+      await queryClient.invalidateQueries({ queryKey: [SERVICE_KEY.RESTAURANT.GET_RESTAURANTS] });
       navigate(`${ROUTE_PATHS.ADMIN.LIST}`);
     } catch (error) {
       console.log(error);
