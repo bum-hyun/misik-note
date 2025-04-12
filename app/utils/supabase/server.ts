@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { CookieOptions } from '@supabase/ssr/src/types';
 
 export function serverClient(request: Request, response: Response) {
-  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+  return createServerClient(process.env.VITE_SUPABASE_URL!, process.env.VITE_SUPABASE_ANON_KEY!, {
     cookies: {
       getAll() {
         const cookieHeader = request.headers.get('cookie') ?? '';

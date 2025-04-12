@@ -1,6 +1,5 @@
 import { API, BlockAPI } from '@editorjs/editorjs';
-
-import browserClient from '~/utils/supabase/client';
+import { getSupabaseBrowserClient } from '~/utils/supabase/client';
 
 export default class SupabaseImageTool {
   static get toolbox() {
@@ -95,14 +94,15 @@ export default class SupabaseImageTool {
       // ✅ 순서 보장: 앞에서부터 차례대로 업로드 및 삽입
       for (const file of files) {
         const filePath = `files/${Date.now()}_${file.name}`;
-        const { error } = await browserClient.storage.from('files').upload(filePath, file);
+        const supabase = getSupabaseBrowserClient();
+        const { error } = await supabase.storage.from('files').upload(filePath, file);
 
         if (error) {
           console.error('Upload error:', error);
           continue;
         }
 
-        const { publicUrl } = browserClient.storage.from('files').getPublicUrl(filePath).data;
+        const { publicUrl } = supabase.storage.from('files').getPublicUrl(filePath).data;
 
         // ✅ 모든 이미지를 blocks.insert 로 삽입 (첫 번째 포함)
         await new Promise((resolve) => {

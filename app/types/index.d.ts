@@ -1,5 +1,14 @@
 type TRestaurantStatus = 'active' | 'pending' | 'rejected';
 
+interface Window {
+  env: { [key: string]: string };
+}
+
+interface ImportMetaEnv {
+  readonly VITE_SUPABASE_URL: string;
+  readonly VITE_SUPABASE_ANON_KEY: string;
+}
+
 interface IRestaurant {
   id: number;
   name: string;

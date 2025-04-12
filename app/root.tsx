@@ -2,9 +2,11 @@ import './globals.css';
 
 import { LinksFunction, MetaFunction } from '@remix-run/node';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 import { css } from 'styled-system/css';
 
+import Header from '~/header';
 import { ReactQueryProvider } from '~/provider';
 
 export const links: LinksFunction = () => [
@@ -41,18 +43,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="preconnect" href={`${process.env.NEXT_PUBLIC_SUPABASE_URL!}`} />
-        <link rel="dns-prefetch" href={`${process.env.NEXT_PUBLIC_SUPABASE_URL!}`} />
         <link rel="shortcut icon" href="/favicon.ico" />
         <Meta />
         <Links />
       </head>
-      <body className={css({ display: 'flex', flexDirection: 'column', height: '100vh' })}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
-        <ScrollRestoration />
-        <Scripts />
-        <Analytics />
-      </body>
+      <ReactQueryProvider>
+        <body className={css({ display: 'flex', flexDirection: 'column', height: '100vh' })}>
+          <Header />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+          <Analytics />
+        </body>
+      </ReactQueryProvider>
     </html>
   );
 }

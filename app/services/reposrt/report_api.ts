@@ -1,9 +1,11 @@
 import { DATABASE_NAMES } from '~/constants/database';
-import supabase from '~/utils/supabase/client';
+import { getSupabaseBrowserClient } from '~/utils/supabase/client';
 
 const database = DATABASE_NAMES.REPORT;
 
 export const getReports = async (): Promise<IReport[]> => {
+  const supabase = getSupabaseBrowserClient();
+
   const { data, error } = await supabase.from(database).select('*');
 
   if (error) {
@@ -13,6 +15,8 @@ export const getReports = async (): Promise<IReport[]> => {
 };
 
 export const postReport = async (payload: IPostReportPayload) => {
+  const supabase = getSupabaseBrowserClient();
+
   const { error } = await supabase.from(database).insert(payload);
   if (error) throw error;
 };

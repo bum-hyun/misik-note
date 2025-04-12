@@ -1,7 +1,7 @@
 import { serverClient } from '~/utils/supabase/server';
 
 export async function getUserFromRequest(request: Request) {
-  const response = new Response(); // 쿠키 갱신용 (사용 안 할 수도 있음)
+  const response = new Response();
   const supabase = serverClient(request, response);
 
   const {

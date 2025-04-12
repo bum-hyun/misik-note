@@ -4,7 +4,7 @@ export const OverlayContext = createContext<{
   openOverlay(id: string, element: ReactNode): void;
   closeOverlay(id: string): void;
 } | null>(null);
-if (process.env.NODE_ENV !== 'production') {
+if (import.meta.env.NODE_ENV !== 'production') {
   OverlayContext.displayName = 'OverlayContext';
 }
 

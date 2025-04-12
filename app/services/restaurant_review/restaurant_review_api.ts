@@ -1,7 +1,9 @@
 import { DATABASE_NAMES, RESTAURANT_REVIEW_WITH_WRITER_SELECT } from '~/constants/database';
-import supabase from '~/utils/supabase/client';
+import { getSupabaseBrowserClient } from '~/utils/supabase/client';
 
 export const getRestaurantReviews = async (params: IGetRestaurantReviewsParams): Promise<IRestaurantReview[]> => {
+  const supabase = getSupabaseBrowserClient();
+
   const limit = params.limit || 10;
   const from = params.page * limit;
   const to = from + limit - 1;
@@ -22,6 +24,8 @@ export const getRestaurantReviews = async (params: IGetRestaurantReviewsParams):
 };
 
 export const getRestaurantReview = async (reviewId: number): Promise<IRestaurantReview> => {
+  const supabase = getSupabaseBrowserClient();
+
   const { data, error } = await supabase.from(DATABASE_NAMES.RESTAURANT_REVIEWS).select(RESTAURANT_REVIEW_WITH_WRITER_SELECT).eq('id', reviewId).single();
 
   if (error) {
@@ -32,8 +36,10 @@ export const getRestaurantReview = async (reviewId: number): Promise<IRestaurant
 };
 
 export const postRestaurantReview = async (payload: IPostRestaurantReview): Promise<IRestaurant> => {
+  const supabase = getSupabaseBrowserClient();
+
   const { data, error } = await supabase.from(DATABASE_NAMES.RESTAURANT_REVIEWS).insert(payload).select();
-  console.log(data);
+
   if (error) {
     throw new Error(`POST Error: ${error.message}`);
   }
@@ -42,6 +48,8 @@ export const postRestaurantReview = async (payload: IPostRestaurantReview): Prom
 };
 
 export const putRestaurantReview = async (payload: IPutRestaurantReview) => {
+  const supabase = getSupabaseBrowserClient();
+
   const { data, error } = await supabase.from(DATABASE_NAMES.RESTAURANT_REVIEWS).update(payload).eq('id', payload.id).select();
 
   if (error) {
