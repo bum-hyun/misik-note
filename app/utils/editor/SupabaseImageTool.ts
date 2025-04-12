@@ -87,7 +87,6 @@ export default class SupabaseImageTool {
     input.addEventListener('change', async () => {
       const files = Array.from(input.files ?? []).reverse();
 
-      console.log(files);
       const currentIndex = this.api.blocks.getCurrentBlockIndex();
       this.api.blocks.delete(currentIndex);
 

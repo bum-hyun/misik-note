@@ -9,7 +9,6 @@ import { getRestaurantReview } from '~/services/restaurant_review/restaurant_rev
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const reviewId = Number(params.reviewId);
   const post = await getRestaurantReview(reviewId);
-
   if (!post) {
     throw new Response('Not Found', { status: 404 });
   }

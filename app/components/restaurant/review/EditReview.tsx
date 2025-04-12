@@ -1,5 +1,5 @@
 import EditorJSHTML from 'editorjs-html';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useNavigate } from '@remix-run/react';
 import { css } from 'styled-system/css';
 
@@ -10,11 +10,12 @@ import { useGetRestaurantNames } from '~/services/restaurant/restaurant_queries'
 import { usePostRestaurantReview, usePutRestaurantReview } from '~/services/restaurant_review/restaurant_review_queries';
 import { useEditorStore } from '~/stores/editorStore';
 import { useUserStore } from '~/stores/userStore';
-import Editor from '~/components/editor/Editor';
 
 interface IEditReviewProps {
   reviewId?: string | number;
 }
+
+const Editor = lazy(() => import('~/components/editor/Editor'));
 
 const EditReview = ({ reviewId }: IEditReviewProps) => {
   const params = useParams();
@@ -124,7 +125,9 @@ const EditReview = ({ reviewId }: IEditReviewProps) => {
             </button>
           </div>
         </div>
-        <Editor />
+        <Suspense fallback={null}>
+          <Editor />
+        </Suspense>
       </div>
       <AddRestaurantModal visible={visible} handleCloseModal={() => setVisible(false)} handleCompleteAddRestaurant={handleCompleteAddRestaurant} />
     </>

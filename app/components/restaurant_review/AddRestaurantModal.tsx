@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Button from 'src/components/Button/Button';
+import Button from '~/components/Button/Button';
 import { css } from 'styled-system/css';
 
 import Modal from '~/components/Overlay/Modal';

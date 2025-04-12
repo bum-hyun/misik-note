@@ -1,13 +1,13 @@
 import './globals.css';
 
-import { LinksFunction, MetaFunction } from '@remix-run/node';
+import { json, LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 import { css } from 'styled-system/css';
 
 import Header from '~/header';
 import { ReactQueryProvider } from '~/provider';
+import { getSupabaseFromServer } from '~/utils/supabase/server';
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -36,6 +36,17 @@ export const meta: MetaFunction = () => {
     { rel: 'canonical', href: '/' },
   ];
 };
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const response = new Response();
+  const supabase = getSupabaseFromServer(request, response);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return json({ user, isLoggedIn: !!user }, { headers: response.headers });
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

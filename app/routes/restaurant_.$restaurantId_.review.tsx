@@ -2,8 +2,8 @@ import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
+import RestaurantReviewList from '~/components/restaurant_review/RestaurantReviewList';
 import { SERVICE_KEY } from '~/constants/service';
-import RestaurantReviewList from '~/routes/restaurant/$restaurantId/review/RestaurantReviewList';
 import { getRestaurantName } from '~/services/restaurant/restaurant_api';
 import { getRestaurantReviews } from '~/services/restaurant_review/restaurant_review_api';
 

@@ -1,5 +1,5 @@
-import { useNavigate } from '@remix-run/react';
-import { lazy, useState } from 'react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
+import { lazy, startTransition, Suspense, useEffect, useState } from 'react';
 import { css } from 'styled-system/css';
 
 import Logo from '~/assets/logo.png';
@@ -8,29 +8,37 @@ import { ROUTE_PATHS } from '~/constants/pathname';
 import { useIsMobile } from '~/hooks/useIsMobile';
 import { useUserStore } from '~/stores/userStore';
 import { getSupabaseBrowserClient } from '~/utils/supabase/client';
+import { isEmpty } from '~/utils/common';
+import type { loader as rootLoader } from '~/root';
 
 const LoginModal = lazy(() => import('~/components/home/LoginModal'));
 const ReportModal = lazy(() => import('~/components/home/ReportModal'));
 
 const Header = () => {
+  const { user, isLoggedIn } = useLoaderData<typeof rootLoader>();
   const navigate = useNavigate();
-  const { setUser, isLoggedIn } = useUserStore();
   const isMobile = useIsMobile();
 
   const [visible, setVisible] = useState(false);
   const [visibleReportModal, setVisibleReportModal] = useState(false);
-  //
-  // const getUser = async () => {
-  //   setUser({
-  //     name: user.user_metadata.name,
-  //     email: user.user_metadata.email,
-  //     nickname: user.user_metadata.nickname,
-  //     avatar_url: user.user_metadata.avatar_url,
-  //     role: user.role,
-  //     id: user.id,
-  //     provider: user.app_metadata.provider,
-  //   });
-  // };
+
+  const { setUser } = useUserStore();
+
+  const setUserToStore = () => {
+    if (user) {
+      startTransition(() => {
+        setUser({
+          name: user.user_metadata.name,
+          email: user.user_metadata.email,
+          nickname: user.user_metadata.nickname,
+          avatar_url: user.user_metadata.avatar_url,
+          role: user.role,
+          id: user.id,
+          provider: user.app_metadata.provider,
+        });
+      });
+    }
+  };
 
   const handleClickLogin = () => setVisible(true);
 
@@ -38,9 +46,15 @@ const Header = () => {
     const supabase = getSupabaseBrowserClient();
     const { error } = await supabase.auth.signOut();
     if (!error) setUser(null);
+    window.location.reload();
   };
 
   const handleReport = () => setVisibleReportModal(true);
+
+  useEffect(() => {
+    if (isEmpty(user)) return;
+    setUserToStore();
+  }, [user]);
 
   return (
     <>
@@ -58,8 +72,12 @@ const Header = () => {
         </div>
       </nav>
       <div className={emptyHeightStyle} />
-      <LoginModal visible={visible} handleCloseModal={() => setVisible(false)} />
-      <ReportModal visible={visibleReportModal} handleCloseModal={() => setVisibleReportModal(false)} />
+      <Suspense fallback={null}>
+        <LoginModal visible={visible} handleCloseModal={() => setVisible(false)} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ReportModal visible={visibleReportModal} handleCloseModal={() => setVisibleReportModal(false)} />
+      </Suspense>
     </>
   );
 };
