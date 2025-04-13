@@ -3,6 +3,7 @@ import './globals.css';
 import { json, LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/remix';
 import { css } from 'styled-system/css';
 
 import Header from '~/header';
@@ -65,6 +66,7 @@ export function Layout() {
           <ScrollRestoration />
           <Scripts />
           <Analytics />
+          <SpeedInsights />
         </body>
       </ReactQueryProvider>
     </html>
