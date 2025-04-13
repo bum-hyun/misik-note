@@ -61,6 +61,7 @@ export default RestaurantReviewList;
 
 const contentsWrapStyle = css({
   maxWidth: '1024px',
+  width: '100%',
   margin: '24px auto',
   padding: '16px 20px 60px',
 });
