@@ -18,7 +18,7 @@ const LoginModal = ({ visible, handleCloseModal }: ILoginModalProps) => {
     await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
-        redirectTo: process.env.NODE_ENV === 'production' ? `https://${process.env.VITE_SUPABASE_URL}/auth/v1/callback` : 'http://localhost:5173/auth/callback',
+        redirectTo: process.env.NODE_ENV === 'production' ? `https://misiknote.com/auth/callback` : 'http://localhost:5173/auth/callback',
       },
     });
   };
