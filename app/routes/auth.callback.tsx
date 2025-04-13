@@ -21,12 +21,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (error) {
-      console.error('Supabase OAuth Exchange Error:', error.message);
-      return redirect('/auth/auth-code-error', { headers });
+    if (!error) {
+      return redirect(next, { headers });
     }
-
-    return redirect(next, { headers });
   }
 
   return redirect('/auth/auth-code-error', { headers });
